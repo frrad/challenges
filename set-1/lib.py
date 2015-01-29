@@ -103,3 +103,15 @@ def score(cleartext):
         if 64 < code < 91 or code == 32 or 96 < code < 123:
             answer += 1
     return answer
+
+
+# The bitwise xor of two strings, truncated to length of shortest
+def xor_ascii(key, cipher):
+    return "".join((chr(ord(a) ^ ord(b)) for (a, b) in zip(key, cipher)))
+
+
+# Decodes cipher by xoring with key (repeated as necessary)
+def xor_ascii_repeated(key_ascii, cipher):
+    while len(key_ascii) < len(cipher):
+        key_ascii = key_ascii + key_ascii
+    return xor_ascii(key_ascii, cipher)
