@@ -8,19 +8,10 @@ def decrypt(ciphertext, key):
     )
 
 
-def score(cleartext):
-    answer = 0
-    for letter in cleartext:
-        code = ord(letter)
-        if 64 < code < 91 or code == 32 or 96 < code < 123:
-            answer += 1
-    return answer
-
-
 def crack(coded):
     tries = [decrypt(coded, chr(x)) for x in xrange(256)]
-    return max(tries, key=score)
+    return max(tries, key=lib.score)
 
 f = open('data/4.txt', 'r')
 
-print max([crack(line.rstrip()) for line in f.readlines()], key=score)
+print max([crack(line.rstrip()) for line in f.readlines()], key=lib.score)

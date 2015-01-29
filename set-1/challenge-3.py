@@ -11,14 +11,5 @@ def decrypt(ciphertext, key):
     )
 
 
-def score(cleartext):
-    answer = 0
-    for letter in cleartext:
-        code = ord(letter)
-        if 64 < code < 91 or code == 32 or 96 < code < 123:
-            answer += 1
-    return answer
-
-
 tries = [(chr(x), decrypt(coded, chr(x))) for x in xrange(256)]
-print max(tries, key=lambda x: score(x[1]))
+print max(tries, key=lambda x: lib.score(x[1]))

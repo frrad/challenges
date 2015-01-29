@@ -33,6 +33,7 @@ encoder_64 = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
 #| || (_) | | | | | | |_
 # \__\___/  |_|_| |_|\__|
 
+
 def base_n_to_int(base_n_input, n, decoder_n):
     output = 0
     for letter in base_n_input:
@@ -54,6 +55,7 @@ def base_64_to_int(base_64_input):
 
 def ascii_to_int(ascii_input):
     return base_n_to_int(ascii_input, 256, ord)
+
 
 #   __                       _       _
 #  / _|_ __ ___  _ __ ___   (_)_ __ | |_
@@ -83,3 +85,21 @@ def int_to_base_64(int_input):
 
 def int_to_ascii(int_input):
     return int_to_base_n(int_input, 256, chr)
+
+
+#       _       _
+#   ___(_)_ __ | |__   ___ _ __
+#  / __| | '_ \| '_ \ / _ \ '__|
+# | (__| | |_) | | | |  __/ |
+#  \___|_| .__/|_| |_|\___|_|
+#        |_|
+
+
+# Likelihood that a string is cleartext
+def score(cleartext):
+    answer = 0
+    for letter in cleartext:
+        code = ord(letter)
+        if 64 < code < 91 or code == 32 or 96 < code < 123:
+            answer += 1
+    return answer
