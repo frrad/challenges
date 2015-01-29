@@ -80,13 +80,17 @@
 
   1. Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.
 
-  2. Write a function to compute the edit distance/Hamming distance between two strings. The Hamming distance is just the number of differing bits. The distance between:
-    ```this is a test```
+  2. Write a function to compute the edit distance/Hamming distance between two strings. *The Hamming distance is just the number of differing bits.* The distance between:
+    ```
+	this is a test
+	```
     and
-    ```wokka wokka!!!```
-    is 37. Make sure your code agrees before you proceed.
+    ```
+	wokka wokka!!!
+	```
+    is 37. *Make sure your code agrees before you proceed.*
 
-  3. For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
+  3. For each KEYSIZE, take the *first* KEYSIZE worth of bytes, and the *second* KEYSIZE worth of bytes, and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
 
   4. The KEYSIZE with the smallest normalized edit distance is probably the key. You could proceed perhaps with the smallest 2-3 KEYSIZE values. Or take 4 KEYSIZE blocks instead of 2 and average the distances.
 
@@ -98,4 +102,28 @@
 
   8. For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
 
-  This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can actually break it, and a similar technique breaks something much more important.
+  This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can *actually break it*, and a similar technique breaks something much more important.
+
+###7. AES in ECB mode
+
+The Base64-encoded content in this file has been encrypted via AES-128 in ECB mode under the key
+
+```
+"YELLOW SUBMARINE".
+```
+
+(case-sensitive, without the quotes; exactly 16 characters; I like "YELLOW SUBMARINE" because it's exactly 16 bytes long, and now you do too).
+
+Decrypt it. You know the key, after all.
+
+Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
+
+###8. Detect AES in ECB mode
+
+In this file are a bunch of hex-encoded ciphertexts.
+
+One of them has been encrypted with ECB.
+
+Detect it.
+
+Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.
