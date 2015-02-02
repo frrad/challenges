@@ -115,3 +115,23 @@ def xor_ascii_repeated(key_ascii, cipher):
     while len(key_ascii) < len(cipher):
         key_ascii = key_ascii + key_ascii
     return xor_ascii(key_ascii, cipher)
+
+# Return Hamming distance between two ascii strings
+
+
+def hamming_distance(a, b):
+    bits = ascii_to_int(xor_ascii(a, b))
+    ans = 0
+    while bits > 0:
+        ans += 1 if bits % 2 == 1 else 0
+        bits /= 2
+    return ans
+
+# Return key and cleartext maximizing score
+
+
+def crack_brute_force(cipher_text, key_set, decrypt_fn, score_fn):
+    return max(
+        ((k, decrypt_fn(k, cipher_text))
+         for k in key_set), key=lambda x: score_fn(x[1])
+    )
