@@ -2,7 +2,7 @@ decoder_16 = {'1': 1, '0': 0, '3': 3, '2': 2, '5': 5, '4': 4, '7': 7, '6': 6,
               '9': 9, '8': 8, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14,
               'f': 15}
 
-decoder_64 = {'+': 62, '/': 63, '1': 53, '0': 52, '3': 55, '2': 54, '5': 57,
+decoder_64 = {'=': 0, '+': 62, '/': 63, '1': 53, '0': 52, '3': 55, '2': 54, '5': 57,
               '4': 56, '7': 59, '6': 58, '9': 61, '8': 60, 'A': 0, 'C': 2,
               'B': 1, 'E': 4, 'D': 3, 'G': 6, 'F': 5, 'I': 8, 'H': 7, 'K': 10,
               'J': 9, 'M': 12, 'L': 11, 'O': 14, 'N': 13, 'Q': 16, 'P': 15,
@@ -25,6 +25,14 @@ encoder_64 = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H',
               43: 'r', 44: 's', 45: 't', 46: 'u', 47: 'v', 48: 'w', 49: 'x',
               50: 'y', 51: 'z', 52: '0', 53: '1', 54: '2', 55: '3', 56: '4',
               57: '5', 58: '6', 59: '7', 60: '8', 61: '9', 62: '+', 63: '/'}
+
+
+# Take care of padding problem in special case
+def base_64_to_ascii(input_data):
+    answer = int_to_ascii(base_64_to_int(input_data))
+    while len(answer) < 3 * len(input_data) / 4:
+        answer = chr(0) + answer
+    return answer
 
 
 # _          _       _
@@ -116,9 +124,8 @@ def xor_ascii_repeated(key_ascii, cipher):
         key_ascii = key_ascii + key_ascii
     return xor_ascii(key_ascii, cipher)
 
+
 # Return Hamming distance between two ascii strings
-
-
 def hamming_distance(a, b):
     bits = ascii_to_int(xor_ascii(a, b))
     ans = 0
@@ -127,9 +134,8 @@ def hamming_distance(a, b):
         bits /= 2
     return ans
 
+
 # Return key and cleartext maximizing score
-
-
 def crack_brute_force(cipher_text, key_set, decrypt_fn, score_fn):
     return max(
         ((k, decrypt_fn(k, cipher_text))
